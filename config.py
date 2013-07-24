@@ -4,7 +4,7 @@ local_movie='media'
 online_movie='http://192.168.1.100:8888/'
 movie_type = ['mp4', 'avi', 'mp3', 'flv']
 port=5000
-omxoptions = "-o local" 
+omxoptions = "-o hdmi" 
 player='omxplayer'
 
 
