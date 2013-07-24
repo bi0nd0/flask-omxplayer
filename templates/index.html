@@ -1,0 +1,58 @@
+{% set page_title = page_title %}
+{% extends "layouts/base.html" %}
+{% block body %}
+<div class="hero-unit">
+	<div class="controls display">
+		<div class="name"></div>
+		<div class="display"></div>
+	</div>	
+</div>
+<div class="row">
+	<div class="btn-group">
+		<button class="btn back" onclick="player('back')"></button>
+		<button class="btn pause" onclick="player('pause')"></button>
+		<button class="btn quit" onclick="player('quit')"></button>
+		<button class  = "btn forward" onclick="player('ahead')"></button>
+	</div>
+</div>
+<div class="hero-unit">
+	{% for f in files %}
+	<button type="button" onclick="return play('{{f}}',1)" class="btn btn-large btn-block btn-success">{{f}}</button>
+	<br>
+	{% endfor %}
+</div>
+<script>
+function player(command) {
+	if(command!='position') {
+		$('.name').html('<img src="{{ url_for('static', filename='img/loading.gif') }}">');
+	};
+	$.ajax({url:'/player', data:{'c':command}, success:function(data) {
+		alert(data);
+		$('.name').html('<h1>'+data+'</h1>');
+	}});
+}
+
+function play(file, online) {
+	alert(1);
+	alert(online);
+	if($('.name').text().toLowerCase()!='not playing') {
+		if(!confirm('There is already a video playing. Do you want to stop it and play "'+unescape(file)+'" instead?')) {
+			return;
+		} else {
+			player('quit');
+		}
+	}
+
+	$('.name').html('<img src="{{ url_for('static', filename='img/loading.gif') }}">');
+	$.ajax({url:'/player', data:{'c':'play','file':file, 'online':online}, success:function(data) {
+		$('.name').html(data);
+	}});
+}
+
+</script>
+<script>
+	$(document).ready(function() {
+
+	});
+</script>
+{% endblock %}
